@@ -1,0 +1,95 @@
+type (
+	TaskContent {
+		Id         string `json:"id"`
+		Name       string `json:"name"`
+		TaskType   string `json:"task_type"`
+		Input      string `json:"input,optional"`
+		Output     string `json:"output,optional"`
+		CommitTime uint64 `json:"commit_time,optional"`
+		BeginTime  uint64 `json:"begin_time,optional"`
+		EndTime    uint64 `json:"end_time,optional"`
+		Status     string `json:"status,optional"`
+		WorkerId   string `json:"worker_id,optional"`
+	}
+
+	WorkerContent {
+		Id       string `json:"id,optional"`
+		Name     string `json:"name"`
+		TaskType string `json:"task_type"`
+		Info     string `json:"info,optional"`
+		Status   string `json:"status,optional"`
+	}
+
+	AddTaskReq {
+		SessionId string `json:"session_id"`
+		Name      string `json:"name"`
+		Input     string `json:"input"`
+		TaskType  string `json:"task_type"`
+	}
+
+	AddTaskResp {
+		SessionId string `json:"session_id"`
+		Name      string `json:"name"`
+		TaskId    string `json:"task_id"`
+	}
+
+	GetTaskReq {
+		SessionId string `json:"session_id"`
+		TaskId    string `json:"task_id"`
+	}
+
+	GetTaskResp {
+		SessionId string      `json:"session_id"`
+		Task      TaskContent `json:"task"`
+	}
+
+	FetchTaskReq {
+		SessionId string `json:"session_id"`
+		TaskType  string `json:"task_type"`
+	}
+
+	FetchTaskResp {
+		SessionId string      `json:"session_id"`
+		Task      TaskContent `json:"task"`
+	}
+
+	UpdateTaskReq {
+		SessionId string      `json:"session_id"`
+		Task      TaskContent `json:"task"`
+	}
+
+	AddWorkerReq {
+		SessionId string        `json:"session_id"`
+		Worker    WorkerContent `json:"worker"`
+	}
+
+	GeneralResp {
+		SessionId string `json:"session_id"`
+		ErrorMsg  string `json:"error_msg,optional"`
+	}
+
+	RemoveWorkerByNameReq {
+		SessionId  string `json:"session_id"`
+		WorkerName string `json:"worker_name"`
+	}
+)
+
+service SchedulerSvr {
+	@handler AddTask
+	post /api/addTask (AddTaskReq) returns (AddTaskResp)
+	
+	@handler GetTask
+	get /api/getTask (GetTaskReq) returns (GetTaskResp)
+	
+	@handler FetchTask
+	get /worker/fetchTask (FetchTaskReq) returns (FetchTaskResp)
+	
+	@handler UpdateTask
+	post /worker/updateTask (UpdateTaskReq) returns (GeneralResp)
+	
+	@handler AddWorker
+	post /worker/addWorker (AddWorkerReq) returns (GeneralResp)
+	
+	@handler RemoveWorkerByName
+	post /api/removeWorkerByName (RemoveWorkerByNameReq) returns (GeneralResp)
+}
