@@ -46,6 +46,7 @@ type (
 	FetchTaskReq {
 		SessionId string `json:"session_id"`
 		TaskType  string `json:"task_type"`
+		WorkerId  string `json:"worker_id"`
 	}
 
 	FetchTaskResp {
@@ -79,10 +80,10 @@ service SchedulerSvr {
 	post /api/addTask (AddTaskReq) returns (AddTaskResp)
 	
 	@handler GetTask
-	get /api/getTask (GetTaskReq) returns (GetTaskResp)
+	put /api/getTask (GetTaskReq) returns (GetTaskResp)
 	
 	@handler FetchTask
-	get /worker/fetchTask (FetchTaskReq) returns (FetchTaskResp)
+	put /worker/fetchTask (FetchTaskReq) returns (FetchTaskResp)
 	
 	@handler UpdateTask
 	post /worker/updateTask (UpdateTaskReq) returns (GeneralResp)

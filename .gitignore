@@ -1,3 +1,4 @@
 .vscode
 logs/
 schedulersvr
+etc/schedulersvr_dev.yaml
