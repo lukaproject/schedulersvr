@@ -35,6 +35,12 @@ func (l *FetchTaskLogic) FetchTask(req *types.FetchTaskReq) (resp *types.FetchTa
 	gerrx.Must(err)
 	modelTask.BeginTime.Scan(time.Now().UnixMilli())
 	modelTask.WorkerId.Scan(req.WorkerId)
+	err = l.svcCtx.TaskTable.Update(l.ctx, modelTask)
+	if err != nil {
+		l.Logger.Error(err)
+		err = gerrx.NewDefaultError(err.Error(), req.SessionId)
+		return
+	}
 	resp.Task = types.ToTaskContent(modelTask)
 	return
 }
