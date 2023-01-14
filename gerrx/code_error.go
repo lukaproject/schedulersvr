@@ -22,7 +22,7 @@ func NewCodeError(code int, msg string, session_id string) error {
 }
 
 func NewDefaultError(msg string, session_id string) error {
-	return NewCodeError(0, msg, session_id)
+	return NewCodeError(-1, msg, session_id)
 }
 
 func (e *CodeError) Error() string {
