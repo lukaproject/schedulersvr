@@ -48,6 +48,7 @@ type GetTaskResp struct {
 type FetchTaskReq struct {
 	SessionId string `json:"session_id"`
 	TaskType  string `json:"task_type"`
+	WorkerId  string `json:"worker_id"`
 }
 
 type FetchTaskResp struct {

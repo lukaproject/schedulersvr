@@ -20,7 +20,7 @@ func (r *redisByCommitTimeSchedulerImpl) AddTask(t Task) (err error) {
 
 func (r *redisByCommitTimeSchedulerImpl) FetchTask(taskType string) (t Task, err error) {
 	var value string
-	value, err = r.redis.Lpop(taskType)
+	value, err = r.redis.Rpop(taskType)
 	if err != nil {
 		return nil, err
 	}

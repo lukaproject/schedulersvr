@@ -24,7 +24,20 @@ func NewAddTaskLogic(ctx context.Context, svcCtx *svc.ServiceContext) *AddTaskLo
 }
 
 func (l *AddTaskLogic) AddTask(req *types.AddTaskReq) (resp *types.AddTaskResp, err error) {
-	// todo: add your logic here and delete this line
-
+	task := req.GenCoreTask()
+	resp = &types.AddTaskResp{
+		SessionId: req.SessionId,
+		TaskId:    task.GetId(),
+		Name:      req.Name,
+	}
+	taskContent := types.GenTaskContent(req, task)
+	_, err = l.svcCtx.TaskTable.Insert(l.ctx, types.ToTaskModel(&taskContent))
+	if err != nil {
+		return
+	}
+	err = l.svcCtx.Scheduler.AddTask(task)
+	if err != nil {
+		return
+	}
 	return
 }

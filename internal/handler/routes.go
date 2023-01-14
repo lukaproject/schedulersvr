@@ -18,12 +18,12 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				Handler: AddTaskHandler(serverCtx),
 			},
 			{
-				Method:  http.MethodGet,
+				Method:  http.MethodPut,
 				Path:    "/api/getTask",
 				Handler: GetTaskHandler(serverCtx),
 			},
 			{
-				Method:  http.MethodGet,
+				Method:  http.MethodPut,
 				Path:    "/worker/fetchTask",
 				Handler: FetchTaskHandler(serverCtx),
 			},

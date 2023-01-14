@@ -1,0 +1,440 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "",
+    "version": ""
+  },
+  "schemes": [
+    "http",
+    "https"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/api/addTask": {
+      "post": {
+        "operationId": "AddTask",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/AddTaskResp"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/AddTaskReq"
+            }
+          }
+        ],
+        "requestBody": {},
+        "tags": [
+          "SchedulerSvr"
+        ]
+      }
+    },
+    "/api/getTask": {
+      "put": {
+        "operationId": "GetTask",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/GetTaskResp"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/GetTaskReq"
+            }
+          }
+        ],
+        "requestBody": {},
+        "tags": [
+          "SchedulerSvr"
+        ]
+      }
+    },
+    "/api/removeWorkerByName": {
+      "post": {
+        "operationId": "RemoveWorkerByName",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/GeneralResp"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/RemoveWorkerByNameReq"
+            }
+          }
+        ],
+        "requestBody": {},
+        "tags": [
+          "SchedulerSvr"
+        ]
+      }
+    },
+    "/worker/addWorker": {
+      "post": {
+        "operationId": "AddWorker",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/GeneralResp"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/AddWorkerReq"
+            }
+          }
+        ],
+        "requestBody": {},
+        "tags": [
+          "SchedulerSvr"
+        ]
+      }
+    },
+    "/worker/fetchTask": {
+      "put": {
+        "operationId": "FetchTask",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/FetchTaskResp"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/FetchTaskReq"
+            }
+          }
+        ],
+        "requestBody": {},
+        "tags": [
+          "SchedulerSvr"
+        ]
+      }
+    },
+    "/worker/updateTask": {
+      "post": {
+        "operationId": "UpdateTask",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/GeneralResp"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UpdateTaskReq"
+            }
+          }
+        ],
+        "requestBody": {},
+        "tags": [
+          "SchedulerSvr"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "AddTaskReq": {
+      "type": "object",
+      "properties": {
+        "session_id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "input": {
+          "type": "string"
+        },
+        "task_type": {
+          "type": "string"
+        }
+      },
+      "title": "AddTaskReq",
+      "required": [
+        "session_id",
+        "name",
+        "input",
+        "task_type"
+      ]
+    },
+    "AddTaskResp": {
+      "type": "object",
+      "properties": {
+        "session_id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "task_id": {
+          "type": "string"
+        }
+      },
+      "title": "AddTaskResp",
+      "required": [
+        "session_id",
+        "name",
+        "task_id"
+      ]
+    },
+    "AddWorkerReq": {
+      "type": "object",
+      "properties": {
+        "session_id": {
+          "type": "string"
+        },
+        "worker": {
+          "$ref": "#/definitions/WorkerContent"
+        }
+      },
+      "title": "AddWorkerReq",
+      "required": [
+        "session_id",
+        "worker"
+      ]
+    },
+    "FetchTaskReq": {
+      "type": "object",
+      "properties": {
+        "session_id": {
+          "type": "string"
+        },
+        "task_type": {
+          "type": "string"
+        },
+        "worker_id": {
+          "type": "string"
+        }
+      },
+      "title": "FetchTaskReq",
+      "required": [
+        "session_id",
+        "task_type",
+        "worker_id"
+      ]
+    },
+    "FetchTaskResp": {
+      "type": "object",
+      "properties": {
+        "session_id": {
+          "type": "string"
+        },
+        "task": {
+          "$ref": "#/definitions/TaskContent"
+        }
+      },
+      "title": "FetchTaskResp",
+      "required": [
+        "session_id",
+        "task"
+      ]
+    },
+    "GeneralResp": {
+      "type": "object",
+      "properties": {
+        "session_id": {
+          "type": "string"
+        },
+        "error_msg": {
+          "type": "string"
+        }
+      },
+      "title": "GeneralResp",
+      "required": [
+        "session_id"
+      ]
+    },
+    "GetTaskReq": {
+      "type": "object",
+      "properties": {
+        "session_id": {
+          "type": "string"
+        },
+        "task_id": {
+          "type": "string"
+        }
+      },
+      "title": "GetTaskReq",
+      "required": [
+        "session_id",
+        "task_id"
+      ]
+    },
+    "GetTaskResp": {
+      "type": "object",
+      "properties": {
+        "session_id": {
+          "type": "string"
+        },
+        "task": {
+          "$ref": "#/definitions/TaskContent"
+        }
+      },
+      "title": "GetTaskResp",
+      "required": [
+        "session_id",
+        "task"
+      ]
+    },
+    "RemoveWorkerByNameReq": {
+      "type": "object",
+      "properties": {
+        "session_id": {
+          "type": "string"
+        },
+        "worker_name": {
+          "type": "string"
+        }
+      },
+      "title": "RemoveWorkerByNameReq",
+      "required": [
+        "session_id",
+        "worker_name"
+      ]
+    },
+    "TaskContent": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "task_type": {
+          "type": "string"
+        },
+        "input": {
+          "type": "string"
+        },
+        "output": {
+          "type": "string"
+        },
+        "commit_time": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "begin_time": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "end_time": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "status": {
+          "type": "string"
+        },
+        "worker_id": {
+          "type": "string"
+        }
+      },
+      "title": "TaskContent",
+      "required": [
+        "id",
+        "name",
+        "task_type"
+      ]
+    },
+    "UpdateTaskReq": {
+      "type": "object",
+      "properties": {
+        "session_id": {
+          "type": "string"
+        },
+        "task": {
+          "$ref": "#/definitions/TaskContent"
+        }
+      },
+      "title": "UpdateTaskReq",
+      "required": [
+        "session_id",
+        "task"
+      ]
+    },
+    "WorkerContent": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "task_type": {
+          "type": "string"
+        },
+        "info": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        }
+      },
+      "title": "WorkerContent",
+      "required": [
+        "name",
+        "task_type"
+      ]
+    }
+  },
+  "securityDefinitions": {
+    "apiKey": {
+      "type": "apiKey",
+      "description": "Enter JWT Bearer token **_only_**",
+      "name": "Authorization",
+      "in": "header"
+    }
+  },
+  "security": [
+    {
+      "apiKey": []
+    }
+  ]
+}

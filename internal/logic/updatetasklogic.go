@@ -2,7 +2,10 @@ package logic
 
 import (
 	"context"
+	"time"
 
+	"github.com/lukaproject/schedulersvr/db/model"
+	"github.com/lukaproject/schedulersvr/gerrx"
 	"github.com/lukaproject/schedulersvr/internal/svc"
 	"github.com/lukaproject/schedulersvr/internal/types"
 
@@ -24,7 +27,23 @@ func NewUpdateTaskLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Update
 }
 
 func (l *UpdateTaskLogic) UpdateTask(req *types.UpdateTaskReq) (resp *types.GeneralResp, err error) {
-	// todo: add your logic here and delete this line
-
+	resp = &types.GeneralResp{
+		SessionId: req.SessionId,
+	}
+	var modelTask *model.Task
+	modelTask, err = l.svcCtx.TaskTable.FindOne(l.ctx, req.Task.Id)
+	if err != nil {
+		l.Logger.Error(err)
+		err = gerrx.NewDefaultError(err.Error(), req.SessionId)
+		return
+	}
+	modelTask.EndTime.Scan(time.Now().UnixMilli())
+	modelTask.Output.Scan(req.Task.Output)
+	modelTask.Status.Scan(req.Task.Status)
+	err = l.svcCtx.TaskTable.Update(l.ctx, modelTask)
+	if err != nil {
+		l.Logger.Error(err)
+		err = gerrx.NewDefaultError(err.Error(), req.SessionId)
+	}
 	return
 }
