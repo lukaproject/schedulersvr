@@ -76,21 +76,39 @@ type (
 )
 
 service SchedulerSvr {
+	@doc(
+		summary: add a task to scheduler make it waiting for scheduling.
+	)
 	@handler AddTask
 	post /api/addTask (AddTaskReq) returns (AddTaskResp)
 	
+	@doc(
+		summary: get the task info from scheduler. [everytime]
+	)
 	@handler GetTask
 	put /api/getTask (GetTaskReq) returns (GetTaskResp)
 	
+	@doc(
+		summary: this api is for worker. to fetch the same task_type's task from scheduler.
+	)
 	@handler FetchTask
 	put /worker/fetchTask (FetchTaskReq) returns (FetchTaskResp)
 	
+	@doc(
+		summary: this api this for worker. After worker finished a task, upload the result to scheduler for saved.
+	)
 	@handler UpdateTask
 	post /worker/updateTask (UpdateTaskReq) returns (GeneralResp)
 	
+	@doc(
+		summary: unimplemented. Add worker to schedule list.
+	)
 	@handler AddWorker
 	post /worker/addWorker (AddWorkerReq) returns (GeneralResp)
 	
+	@doc(
+		summary: unimplemented. Remove worker from schedule list.
+	)
 	@handler RemoveWorkerByName
 	post /api/removeWorkerByName (RemoveWorkerByNameReq) returns (GeneralResp)
 }

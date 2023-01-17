@@ -17,6 +17,7 @@
   "paths": {
     "/api/addTask": {
       "post": {
+        "summary": "add a task to scheduler make it waiting for scheduling.",
         "operationId": "AddTask",
         "responses": {
           "200": {
@@ -44,6 +45,7 @@
     },
     "/api/getTask": {
       "put": {
+        "summary": "get the task info from scheduler. [everytime]",
         "operationId": "GetTask",
         "responses": {
           "200": {
@@ -71,6 +73,7 @@
     },
     "/api/removeWorkerByName": {
       "post": {
+        "summary": "unimplemented. Remove worker from schedule list.",
         "operationId": "RemoveWorkerByName",
         "responses": {
           "200": {
@@ -98,6 +101,7 @@
     },
     "/worker/addWorker": {
       "post": {
+        "summary": "unimplemented. Add worker to schedule list.",
         "operationId": "AddWorker",
         "responses": {
           "200": {
@@ -125,6 +129,7 @@
     },
     "/worker/fetchTask": {
       "put": {
+        "summary": "this api is for worker. to fetch the same task_type's task from scheduler.",
         "operationId": "FetchTask",
         "responses": {
           "200": {
@@ -152,6 +157,7 @@
     },
     "/worker/updateTask": {
       "post": {
+        "summary": "this api this for worker. After worker finished a task, upload the result to scheduler for saved.",
         "operationId": "UpdateTask",
         "responses": {
           "200": {

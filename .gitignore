@@ -3,3 +3,4 @@ logs/
 schedulersvr
 etc/schedulersvr_dev.yaml
 out/
+bin/

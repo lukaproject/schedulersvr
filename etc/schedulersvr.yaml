@@ -2,8 +2,17 @@ Name: SchedulerSvr
 Host: 0.0.0.0
 Port: 8888
 Mode: dev
+Log:
+  Encoding: plain
 
+Scheduler:
+  SchedulerMode: BY_COMMIT_TIME
+  MQType: REDIS
+  Redis:
+    Host: "$redis_host"
+    Type: "node"
+    Pass: "$redis_pwd"
 
 DB:
   Mysql:
-    Datasource: user:password@tcp(host)/dbname
+    Datasource: root:pwd_of_mysql@tcp(mysql_host:mysql_port)/scheduler

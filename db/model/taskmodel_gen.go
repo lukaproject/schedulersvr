@@ -17,8 +17,8 @@ import (
 var (
 	taskFieldNames          = builder.RawFieldNames(&Task{})
 	taskRows                = strings.Join(taskFieldNames, ",")
-	taskRowsExpectAutoSet   = strings.Join(stringx.Remove(taskFieldNames, "`created_at`", "`create_time`", "`update_at`", "`updated_at`", "`update_time`", "`create_at`"), ",")
-	taskRowsWithPlaceHolder = strings.Join(stringx.Remove(taskFieldNames, "`id`", "`created_at`", "`create_time`", "`update_at`", "`updated_at`", "`update_time`", "`create_at`"), "=?,") + "=?"
+	taskRowsExpectAutoSet   = strings.Join(stringx.Remove(taskFieldNames, "`create_time`", "`update_at`", "`updated_at`", "`update_time`", "`create_at`", "`created_at`"), ",")
+	taskRowsWithPlaceHolder = strings.Join(stringx.Remove(taskFieldNames, "`id`", "`create_time`", "`update_at`", "`updated_at`", "`update_time`", "`create_at`", "`created_at`"), "=?,") + "=?"
 )
 
 type (
