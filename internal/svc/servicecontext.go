@@ -1,22 +1,16 @@
 package svc
 
 import (
+	"github.com/lukaproject/atur"
 	"github.com/lukaproject/schedulersvr/core"
-	"github.com/lukaproject/schedulersvr/db/model"
+	"github.com/lukaproject/schedulersvr/gerrx"
 	"github.com/lukaproject/schedulersvr/internal/config"
-	"github.com/zeromicro/go-zero/core/stores/sqlx"
-)
-
-const (
-	mysqlName = "mysql"
 )
 
 type ServiceContext struct {
 	Config    config.Config
 	Scheduler core.Scheduler
-
-	SqlConn   sqlx.SqlConn
-	TaskTable model.TaskModel
+	TaskStore atur.KvStore
 }
 
 func NewServiceContext(c config.Config) *ServiceContext {
@@ -28,7 +22,8 @@ func NewServiceContext(c config.Config) *ServiceContext {
 		Config:    c,
 		Scheduler: sch,
 	}
-	svc.SqlConn = sqlx.NewSqlConn(mysqlName, c.DB.Mysql.Datasource)
-	svc.TaskTable = model.NewTaskModel(svc.SqlConn)
+	kvConf := atur.NewKvConfig()
+	svc.TaskStore, err = atur.NewKvStore(kvConf)
+	gerrx.Must(err)
 	return svc
 }

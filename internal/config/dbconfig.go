@@ -3,13 +3,15 @@ package config
 import "github.com/zeromicro/go-zero/core/logx"
 
 type DbConfig struct {
-	Mysql MysqlConfig
+	AturKv AturKvConfig
 }
 
-type MysqlConfig struct {
-	Datasource string
+type AturKvConfig struct {
+	DirPath string
+	Shards  int
 }
 
 func (dbc DbConfig) Tell() {
-	logx.Infof("mysql.datasource=%s", dbc.Mysql.Datasource)
+	logx.Infof("atur.DirPath=%s", dbc.AturKv.DirPath)
+	logx.Infof("atur.Shards=%d", dbc.AturKv.Shards)
 }

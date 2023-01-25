@@ -3,7 +3,6 @@ package logic
 import (
 	"context"
 
-	"github.com/lukaproject/schedulersvr/db/model"
 	"github.com/lukaproject/schedulersvr/gerrx"
 	"github.com/lukaproject/schedulersvr/internal/svc"
 	"github.com/lukaproject/schedulersvr/internal/types"
@@ -29,13 +28,13 @@ func (l *GetTaskLogic) GetTask(req *types.GetTaskReq) (resp *types.GetTaskResp, 
 	resp = &types.GetTaskResp{
 		SessionId: req.SessionId,
 	}
-	var modelTask *model.Task
-	modelTask, err = l.svcCtx.TaskTable.FindOne(l.ctx, req.TaskId)
+	taskContent := types.TaskContent{}
+	err = l.svcCtx.TaskStore.GetCtx(l.ctx, []byte(req.TaskId), &taskContent)
 	if err != nil {
 		l.Logger.Error(err)
 		err = gerrx.NewDefaultError(err.Error(), req.SessionId)
 		return
 	}
-	resp.Task = types.ToTaskContent(modelTask)
+	resp.Task = taskContent
 	return
 }

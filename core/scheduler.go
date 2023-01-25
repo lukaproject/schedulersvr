@@ -7,7 +7,9 @@ type Scheduler interface {
 	FetchTask(taskType string) (Task, error)
 }
 
-// a demo scheduler implement by redis.
+// A demo scheduler implement by redis.
+// This redis is a sub process with
+// a scheduler.
 type redisByCommitTimeSchedulerImpl struct {
 	c     *Config
 	redis *redis.Redis

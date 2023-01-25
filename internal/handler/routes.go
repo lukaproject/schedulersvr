@@ -34,13 +34,8 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 			},
 			{
 				Method:  http.MethodPost,
-				Path:    "/worker/addWorker",
-				Handler: AddWorkerHandler(serverCtx),
-			},
-			{
-				Method:  http.MethodPost,
-				Path:    "/api/removeWorkerByName",
-				Handler: RemoveWorkerByNameHandler(serverCtx),
+				Path:    "/worker/heartBeat",
+				Handler: HeartBeatHandler(serverCtx),
 			},
 		},
 	)
