@@ -22,7 +22,7 @@ func NewServiceContext(c config.Config) *ServiceContext {
 		Config:    c,
 		Scheduler: sch,
 	}
-	kvConf := atur.NewKvConfig()
+	kvConf := atur.NewKvConfig(atur.SetDir(c.DB.AturKv.DirPath), atur.SetShards(c.DB.AturKv.Shards))
 	svc.TaskStore, err = atur.NewKvStore(kvConf)
 	gerrx.Must(err)
 	return svc

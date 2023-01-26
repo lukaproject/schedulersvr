@@ -24,6 +24,9 @@ func (r *redisByCommitTimeSchedulerImpl) FetchTask(taskType string) (t Task, err
 	var value string
 	value, err = r.redis.Rpop(taskType)
 	if err != nil {
+		if err == redis.Nil {
+			return nil, Err_TaskQueueEmpty
+		}
 		return nil, err
 	}
 	t = &UsualTask{}

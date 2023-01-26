@@ -4,6 +4,7 @@ import (
 	"context"
 	"time"
 
+	"github.com/lukaproject/schedulersvr/core"
 	"github.com/lukaproject/schedulersvr/gerrx"
 	"github.com/lukaproject/schedulersvr/internal/svc"
 	"github.com/lukaproject/schedulersvr/internal/types"
@@ -30,6 +31,11 @@ func (l *FetchTaskLogic) FetchTask(req *types.FetchTaskReq) (resp *types.FetchTa
 		SessionId: req.SessionId,
 	}
 	task, err := l.svcCtx.Scheduler.FetchTask(req.TaskType)
+	if err == core.Err_TaskQueueEmpty {
+		l.Logger.Error(err)
+		err = gerrx.NewDefaultError(err.Error(), req.SessionId)
+		return
+	}
 	gerrx.Must(err)
 	taskContent := types.TaskContent{}
 	err = l.svcCtx.TaskStore.GetCtx(l.ctx, []byte(task.GetId()), &taskContent)
