@@ -1,0 +1,8 @@
+version: '3'
+services:
+  schedulersvr:
+    ports:
+      - "8888:8888"
+    image: schedulersvr:latest
+  redis:
+    image: redis:6.0-alpine

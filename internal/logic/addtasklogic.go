@@ -31,7 +31,7 @@ func (l *AddTaskLogic) AddTask(req *types.AddTaskReq) (resp *types.AddTaskResp, 
 		Name:      req.Name,
 	}
 	taskContent := types.GenTaskContent(req, task)
-	_, err = l.svcCtx.TaskTable.Insert(l.ctx, types.ToTaskModel(&taskContent))
+	err = l.svcCtx.TaskStore.SetCtx(l.ctx, []byte(taskContent.Id), taskContent)
 	if err != nil {
 		return
 	}

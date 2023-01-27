@@ -61,17 +61,17 @@ type UpdateTaskReq struct {
 	Task      TaskContent `json:"task"`
 }
 
-type AddWorkerReq struct {
-	SessionId string        `json:"session_id"`
-	Worker    WorkerContent `json:"worker"`
-}
-
 type GeneralResp struct {
 	SessionId string `json:"session_id"`
 	ErrorMsg  string `json:"error_msg,optional"`
 }
 
-type RemoveWorkerByNameReq struct {
-	SessionId  string `json:"session_id"`
-	WorkerName string `json:"worker_name"`
+type HeartBeatReq struct {
+	SessionId string        `json:"session_id"`
+	Worker    WorkerContent `json:"worker"`
+}
+
+type HeartBeatResp struct {
+	SessionId string `json:"session_id"`
+	ErrorMsg  string `json:"error_msg,optional"`
 }

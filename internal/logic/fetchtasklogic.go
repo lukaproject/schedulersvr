@@ -4,6 +4,7 @@ import (
 	"context"
 	"time"
 
+	"github.com/lukaproject/schedulersvr/core"
 	"github.com/lukaproject/schedulersvr/gerrx"
 	"github.com/lukaproject/schedulersvr/internal/svc"
 	"github.com/lukaproject/schedulersvr/internal/types"
@@ -30,17 +31,23 @@ func (l *FetchTaskLogic) FetchTask(req *types.FetchTaskReq) (resp *types.FetchTa
 		SessionId: req.SessionId,
 	}
 	task, err := l.svcCtx.Scheduler.FetchTask(req.TaskType)
+	if err == core.Err_TaskQueueEmpty {
+		l.Logger.Error(err)
+		err = gerrx.NewDefaultError(err.Error(), req.SessionId)
+		return
+	}
 	gerrx.Must(err)
-	modelTask, err := l.svcCtx.TaskTable.FindOne(l.ctx, task.GetId())
+	taskContent := types.TaskContent{}
+	err = l.svcCtx.TaskStore.GetCtx(l.ctx, []byte(task.GetId()), &taskContent)
 	gerrx.Must(err)
-	modelTask.BeginTime.Scan(time.Now().UnixMilli())
-	modelTask.WorkerId.Scan(req.WorkerId)
-	err = l.svcCtx.TaskTable.Update(l.ctx, modelTask)
+	taskContent.BeginTime = uint64(time.Now().UnixMilli())
+	taskContent.WorkerId = req.WorkerId
+	err = l.svcCtx.TaskStore.SetCtx(l.ctx, []byte(taskContent.Id), &taskContent)
 	if err != nil {
 		l.Logger.Error(err)
 		err = gerrx.NewDefaultError(err.Error(), req.SessionId)
 		return
 	}
-	resp.Task = types.ToTaskContent(modelTask)
+	resp.Task = taskContent
 	return
 }

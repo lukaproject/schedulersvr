@@ -9,16 +9,16 @@ import (
 	"github.com/zeromicro/go-zero/rest/httpx"
 )
 
-func RemoveWorkerByNameHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
+func HeartBeatHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		var req types.RemoveWorkerByNameReq
+		var req types.HeartBeatReq
 		if err := httpx.Parse(r, &req); err != nil {
 			httpx.Error(w, err)
 			return
 		}
 
-		l := logic.NewRemoveWorkerByNameLogic(r.Context(), svcCtx)
-		resp, err := l.RemoveWorkerByName(&req)
+		l := logic.NewHeartBeatLogic(r.Context(), svcCtx)
+		resp, err := l.HeartBeat(&req)
 		if err != nil {
 			httpx.Error(w, err)
 		} else {

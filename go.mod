@@ -9,6 +9,12 @@ require (
 )
 
 require (
+	github.com/golang/snappy v0.0.4 // indirect
+	github.com/lukaproject/atur v0.0.0-20230125074500-83fd183917b0
+	github.com/syndtr/goleveldb v1.0.0 // indirect
+)
+
+require (
 	github.com/alicebob/gopher-json v0.0.0-20200520072559-a9ecdc9d1d3a // indirect
 	github.com/beorn7/perks v1.0.1 // indirect
 	github.com/cenkalti/backoff/v4 v4.1.3 // indirect

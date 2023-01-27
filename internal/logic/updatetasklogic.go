@@ -4,7 +4,6 @@ import (
 	"context"
 	"time"
 
-	"github.com/lukaproject/schedulersvr/db/model"
 	"github.com/lukaproject/schedulersvr/gerrx"
 	"github.com/lukaproject/schedulersvr/internal/svc"
 	"github.com/lukaproject/schedulersvr/internal/types"
@@ -30,17 +29,17 @@ func (l *UpdateTaskLogic) UpdateTask(req *types.UpdateTaskReq) (resp *types.Gene
 	resp = &types.GeneralResp{
 		SessionId: req.SessionId,
 	}
-	var modelTask *model.Task
-	modelTask, err = l.svcCtx.TaskTable.FindOne(l.ctx, req.Task.Id)
+	taskContent := types.TaskContent{}
+	err = l.svcCtx.TaskStore.GetCtx(l.ctx, []byte(req.Task.Id), &taskContent)
 	if err != nil {
 		l.Logger.Error(err)
 		err = gerrx.NewDefaultError(err.Error(), req.SessionId)
 		return
 	}
-	modelTask.EndTime.Scan(time.Now().UnixMilli())
-	modelTask.Output.Scan(req.Task.Output)
-	modelTask.Status.Scan(req.Task.Status)
-	err = l.svcCtx.TaskTable.Update(l.ctx, modelTask)
+	taskContent.EndTime = uint64(time.Now().UnixMilli())
+	taskContent.Output = req.Task.Output
+	taskContent.Status = req.Task.Status
+	err = l.svcCtx.TaskStore.SetCtx(l.ctx, []byte(taskContent.Id), &taskContent)
 	if err != nil {
 		l.Logger.Error(err)
 		err = gerrx.NewDefaultError(err.Error(), req.SessionId)
