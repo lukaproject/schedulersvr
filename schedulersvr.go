@@ -27,7 +27,7 @@ func main() {
 	defer server.Stop()
 	ctx := svc.NewServiceContext(c)
 	handler.RegisterHandlers(server, ctx)
-	httpx.SetErrorHandlerCtx(gerrx.ErrorHandlerCtx)
+	httpx.SetErrorHandler(gerrx.ErrorHandler)
 	fmt.Printf("Starting server at %s:%d...\n", c.Host, c.Port)
 	server.Start()
 }

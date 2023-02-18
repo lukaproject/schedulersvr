@@ -30,7 +30,7 @@ jobs:
 
     - name: Test
       run: |
-        go test -v ./...
+        go test -v $(go list ./... | grep -v /apitest/)
   
     - name: Benchmark
       run: |

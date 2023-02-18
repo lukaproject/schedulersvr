@@ -23,6 +23,21 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				Handler: GetTaskHandler(serverCtx),
 			},
 			{
+				Method:  http.MethodPost,
+				Path:    "/api/addTaskType",
+				Handler: AddTaskTypeHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPut,
+				Path:    "/api/getTaskType",
+				Handler: getTaskTypeHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPut,
+				Path:    "/api/deleteTaskType",
+				Handler: deleteTaskTypeHandler(serverCtx),
+			},
+			{
 				Method:  http.MethodPut,
 				Path:    "/worker/fetchTask",
 				Handler: FetchTaskHandler(serverCtx),

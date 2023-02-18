@@ -1,7 +1,6 @@
 package gerrx
 
 import (
-	"context"
 	"net/http"
 )
 
@@ -37,8 +36,10 @@ func (e *CodeError) Data() *CodeErrorResponse {
 	}
 }
 
-func ErrorHandlerCtx(_ context.Context, err error) (int, interface{}) {
+func ErrorHandler(err error) (int, interface{}) {
 	switch e := err.(type) {
+	case ExHttpError:
+		return e.Response()
 	case *CodeError:
 		return http.StatusOK, e.Data()
 	default:

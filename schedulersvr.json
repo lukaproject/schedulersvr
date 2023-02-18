@@ -43,6 +43,62 @@
         ]
       }
     },
+    "/api/addTaskType": {
+      "post": {
+        "summary": "add a new task type",
+        "operationId": "AddTaskType",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/GeneralResp"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/AddTaskTypeReq"
+            }
+          }
+        ],
+        "requestBody": {},
+        "tags": [
+          "SchedulerSvr"
+        ]
+      }
+    },
+    "/api/deleteTaskType": {
+      "put": {
+        "summary": "delete the task type by name",
+        "operationId": "deleteTaskType",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/GeneralResp"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/DeleteTaskTypeReq"
+            }
+          }
+        ],
+        "requestBody": {},
+        "tags": [
+          "SchedulerSvr"
+        ]
+      }
+    },
     "/api/getTask": {
       "put": {
         "summary": "get the task info from scheduler. [everytime]",
@@ -62,6 +118,34 @@
             "required": true,
             "schema": {
               "$ref": "#/definitions/GetTaskReq"
+            }
+          }
+        ],
+        "requestBody": {},
+        "tags": [
+          "SchedulerSvr"
+        ]
+      }
+    },
+    "/api/getTaskType": {
+      "put": {
+        "summary": "get the task type",
+        "operationId": "getTaskType",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/GetTaskTypeResp"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/GetTaskTypeReq"
             }
           }
         ],
@@ -201,6 +285,46 @@
         "task_id"
       ]
     },
+    "AddTaskTypeReq": {
+      "type": "object",
+      "properties": {
+        "session_id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "max_task_in_que_limit": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "extra_info": {
+          "type": "string"
+        }
+      },
+      "title": "AddTaskTypeReq",
+      "required": [
+        "session_id",
+        "name",
+        "max_task_in_que_limit"
+      ]
+    },
+    "DeleteTaskTypeReq": {
+      "type": "object",
+      "properties": {
+        "session_id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        }
+      },
+      "title": "DeleteTaskTypeReq",
+      "required": [
+        "session_id",
+        "name"
+      ]
+    },
     "FetchTaskReq": {
       "type": "object",
       "properties": {
@@ -284,6 +408,38 @@
         "task"
       ]
     },
+    "GetTaskTypeReq": {
+      "type": "object",
+      "properties": {
+        "session_id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        }
+      },
+      "title": "GetTaskTypeReq",
+      "required": [
+        "session_id",
+        "name"
+      ]
+    },
+    "GetTaskTypeResp": {
+      "type": "object",
+      "properties": {
+        "session_id": {
+          "type": "string"
+        },
+        "task_type": {
+          "$ref": "#/definitions/TaskTypeContent"
+        }
+      },
+      "title": "GetTaskTypeResp",
+      "required": [
+        "session_id",
+        "task_type"
+      ]
+    },
     "HeartBeatReq": {
       "type": "object",
       "properties": {
@@ -357,6 +513,35 @@
         "id",
         "name",
         "task_type"
+      ]
+    },
+    "TaskTypeContent": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "max_task_in_que_limit": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "create_time": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "extra_info": {
+          "type": "string"
+        }
+      },
+      "title": "TaskTypeContent",
+      "required": [
+        "id",
+        "name",
+        "max_task_in_que_limit",
+        "create_time"
       ]
     },
     "UpdateTaskReq": {

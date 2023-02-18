@@ -6,7 +6,10 @@ require (
 	github.com/alicebob/miniredis/v2 v2.23.1
 	github.com/stretchr/testify v1.8.1
 	github.com/zeromicro/go-zero v1.4.3
+	golang.org/x/oauth2 v0.0.0-20221014153046-6fdb5e3db783
 )
+
+require google.golang.org/appengine v1.6.7 // indirect
 
 require (
 	github.com/golang/snappy v0.0.4 // indirect

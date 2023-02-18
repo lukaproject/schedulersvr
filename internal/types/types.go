@@ -14,6 +14,14 @@ type TaskContent struct {
 	WorkerId   string `json:"worker_id,optional"`
 }
 
+type TaskTypeContent struct {
+	Id                string `json:"id"`
+	Name              string `json:"name"`
+	MaxTaskInQueLimit int64  `json:"max_task_in_que_limit"`
+	CreateTime        int64  `json:"create_time"`
+	ExtraInfo         string `json:"extra_info,optional"`
+}
+
 type WorkerContent struct {
 	Id       string `json:"id,optional"`
 	Name     string `json:"name"`
@@ -74,4 +82,26 @@ type HeartBeatReq struct {
 type HeartBeatResp struct {
 	SessionId string `json:"session_id"`
 	ErrorMsg  string `json:"error_msg,optional"`
+}
+
+type AddTaskTypeReq struct {
+	SessionId         string `json:"session_id"`
+	Name              string `json:"name"`
+	MaxTaskInQueLimit int64  `json:"max_task_in_que_limit"`
+	ExtraInfo         string `json:"extra_info,optional"`
+}
+
+type GetTaskTypeReq struct {
+	SessionId string `json:"session_id"`
+	Name      string `json:"name"`
+}
+
+type GetTaskTypeResp struct {
+	SessionId string          `json:"session_id"`
+	TaskType  TaskTypeContent `json:"task_type"`
+}
+
+type DeleteTaskTypeReq struct {
+	SessionId string `json:"session_id"`
+	Name      string `json:"name"`
 }

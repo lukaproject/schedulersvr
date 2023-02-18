@@ -3,13 +3,12 @@ package types
 import (
 	"time"
 
-	"github.com/google/uuid"
 	"github.com/lukaproject/schedulersvr/core"
 )
 
 func (atr *AddTaskReq) GenCoreTask() core.Task {
 	utask := &core.UsualTask{
-		Id:    uuid.NewString(),
+		Id:    GenTaskId(),
 		Type:  atr.TaskType,
 		Input: atr.Input,
 	}

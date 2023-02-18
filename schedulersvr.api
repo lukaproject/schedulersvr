@@ -12,6 +12,14 @@ type (
 		WorkerId   string `json:"worker_id,optional"`
 	}
 
+	TaskTypeContent {
+		Id                string `json:"id"`
+		Name              string `json:"name"`
+		MaxTaskInQueLimit int64  `json:"max_task_in_que_limit"`
+		CreateTime        int64  `json:"create_time"`
+		ExtraInfo         string `json:"extra_info,optional"`
+	}
+
 	WorkerContent {
 		Id       string `json:"id,optional"`
 		Name     string `json:"name"`
@@ -73,6 +81,28 @@ type (
 		SessionId string `json:"session_id"`
 		ErrorMsg  string `json:"error_msg,optional"`
 	}
+
+	AddTaskTypeReq {
+		SessionId         string `json:"session_id"`
+		Name              string `json:"name"`
+		MaxTaskInQueLimit int64  `json:"max_task_in_que_limit"`
+		ExtraInfo         string `json:"extra_info,optional"`
+	}
+
+	GetTaskTypeReq {
+		SessionId string `json:"session_id"`
+		Name      string `json:"name"`
+	}
+
+	GetTaskTypeResp {
+		SessionId string          `json:"session_id"`
+		TaskType  TaskTypeContent `json:"task_type"`
+	}
+
+	DeleteTaskTypeReq {
+		SessionId string `json:"session_id"`
+		Name      string `json:"name"`
+	}
 )
 
 service SchedulerSvr {
@@ -87,6 +117,24 @@ service SchedulerSvr {
 	)
 	@handler GetTask
 	put /api/getTask (GetTaskReq) returns (GetTaskResp)
+	
+	@doc(
+		summary: add a new task type
+	)
+	@handler AddTaskType
+	post /api/addTaskType (AddTaskTypeReq) returns (GeneralResp)
+	
+	@doc(
+		summary: get the task type
+	)
+	@handler getTaskType
+	put /api/getTaskType (GetTaskTypeReq) returns (GetTaskTypeResp)
+	
+	@doc(
+		summary: delete the task type by name
+	)
+	@handler deleteTaskType
+	put /api/deleteTaskType (DeleteTaskTypeReq) returns (GeneralResp)
 	
 	@doc(
 		summary: this api is for worker. to fetch the same task_type's task from scheduler.

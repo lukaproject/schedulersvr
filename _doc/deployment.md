@@ -10,7 +10,7 @@ docker build -t schedulersvr:latest -f _docker/Dockerfile .
 ```
 2. deploy
 ```bash
-docker-compose -f _docker/schedulersvr.yml up -d
+docker-compose -f _docker/schedulersvrstandalone.yml up -d
 ```
 
 ## Linux
