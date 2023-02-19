@@ -2,6 +2,7 @@ Name: SchedulerSvr
 Host: 0.0.0.0
 Port: 8888
 Mode: dev
+Timeout: 15000
 Log:
   Encoding: plain
 

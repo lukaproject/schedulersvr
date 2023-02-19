@@ -2,8 +2,10 @@ package logic
 
 import (
 	"context"
-	"errors"
+	"fmt"
+	"net/http"
 
+	"github.com/lukaproject/schedulersvr/gerrx"
 	"github.com/lukaproject/schedulersvr/internal/logic/validate"
 	"github.com/lukaproject/schedulersvr/internal/svc"
 	"github.com/lukaproject/schedulersvr/internal/types"
@@ -37,7 +39,8 @@ func (l *GetTaskTypeLogic) GetTaskType(req *types.GetTaskTypeReq) (resp *types.G
 	ttc, err := l.svcCtx.Dbc.GetTaskTypeByName(l.ctx, req.Name)
 	if err != nil {
 		l.Logger.Error(err)
-		return nil, errors.New("????")
+		err = gerrx.NewDefaultHttpError(http.StatusNotFound, fmt.Sprintf("task type name = %s not found", req.Name))
+		return
 	}
 	resp.TaskType = ttc
 	return

@@ -2,11 +2,13 @@ package apitest
 
 import (
 	"context"
+	"net/http"
 	"testing"
 
 	"github.com/google/uuid"
 	apitest_common "github.com/lukaproject/schedulersvr/apitest/common"
 	"github.com/lukaproject/schedulersvr/apitest/swagger"
+	"github.com/stretchr/testify/require"
 	"github.com/stretchr/testify/suite"
 	"github.com/zeromicro/go-zero/core/conf"
 	"github.com/zeromicro/go-zero/core/stores/sqlx"
@@ -21,7 +23,7 @@ type TaskTypeTestSuite struct {
 }
 
 func (ttts *TaskTypeTestSuite) SetupSuite() {
-	conf.MustLoad(*configFile, &ttts.cfg)
+	conf.MustLoad(*ConfigFile, &ttts.cfg)
 	ttts.T().Log(ttts.cfg.Addr)
 	ttts.T().Log(ttts.cfg.MysqlDataSource)
 	ttts.conn = sqlx.NewMysql(ttts.cfg.MysqlDataSource)
@@ -39,13 +41,38 @@ func (ttts *TaskTypeTestSuite) SetupTest() {
 
 func (ttts *TaskTypeTestSuite) Test_TaskTypeNotFound() {
 	c := swagger.NewAPIClient(ttts.swaggerCfg)
-	resp, httpResp, err := c.SchedulerSvrApi.GetTaskType(context.Background(), swagger.GetTaskTypeReq{
+	_, httpResp, _ := c.SchedulerSvrApi.GetTaskType(context.Background(), swagger.GetTaskTypeReq{
 		SessionId: uuid.NewString(),
 		Name:      "2333",
 	})
-	ttts.T().Log(err)
-	ttts.T().Log(httpResp)
-	ttts.T().Log(resp)
+	require.Equal(ttts.T(), httpResp.StatusCode, http.StatusNotFound)
+}
+
+func (ttts *TaskTypeTestSuite) Test_TaskTypeAddAndGetOk() {
+	c := swagger.NewAPIClient(ttts.swaggerCfg)
+
+	ttc := swagger.TaskTypeContent{
+		Name:              "test_task_type",
+		MaxTaskInQueLimit: -1,
+		ExtraInfo:         "extra info",
+	}
+
+	_, _, err := c.SchedulerSvrApi.AddTaskType(context.Background(), swagger.AddTaskTypeReq{
+		SessionId:         uuid.NewString(),
+		Name:              ttc.Name,
+		MaxTaskInQueLimit: ttc.MaxTaskInQueLimit,
+		ExtraInfo:         ttc.ExtraInfo,
+	})
+	require.Nil(ttts.T(), err)
+
+	resp, _, err := c.SchedulerSvrApi.GetTaskType(context.Background(), swagger.GetTaskTypeReq{
+		SessionId: uuid.NewString(),
+		Name:      ttc.Name,
+	})
+	require.Nil(ttts.T(), err)
+	require.Equal(ttts.T(), resp.TaskType.ExtraInfo, ttc.ExtraInfo)
+	require.Equal(ttts.T(), resp.TaskType.MaxTaskInQueLimit, ttc.MaxTaskInQueLimit)
+	require.Equal(ttts.T(), resp.TaskType.Name, ttc.Name)
 }
 
 func Test_TaskTypeTestSuite(t *testing.T) {

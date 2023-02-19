@@ -20,7 +20,7 @@ type impl struct {
 }
 
 func (idbc *impl) AddTaskType(ctx context.Context, ttc types.TaskTypeContent) (err error) {
-	_, err = idbc.mTaskType.Insert(ctx, &model.TaskType{
+	_, err = idbc.mTaskType.AddTaskTypeWithCreateTime(ctx, &model.TaskType{
 		TaskTypeId:        ttc.Id,
 		TaskTypeName:      ttc.Name,
 		MaxTaskInQueLimit: ttc.MaxTaskInQueLimit,
