@@ -46,6 +46,7 @@ func (idbc *impl) GetTaskTypeByName(ctx context.Context, taskTypeName string) (t
 }
 
 func (idbc *impl) DeleteTaskTypeByName(ctx context.Context, taskTypeName string) (err error) {
+	err = idbc.mTaskType.DeleteTaskTypeByName(ctx, taskTypeName)
 	return
 }
 

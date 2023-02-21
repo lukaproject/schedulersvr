@@ -70,9 +70,81 @@ func (ttts *TaskTypeTestSuite) Test_TaskTypeAddAndGetOk() {
 		Name:      ttc.Name,
 	})
 	require.Nil(ttts.T(), err)
-	require.Equal(ttts.T(), resp.TaskType.ExtraInfo, ttc.ExtraInfo)
-	require.Equal(ttts.T(), resp.TaskType.MaxTaskInQueLimit, ttc.MaxTaskInQueLimit)
-	require.Equal(ttts.T(), resp.TaskType.Name, ttc.Name)
+	require.Equal(ttts.T(), ttc.ExtraInfo, resp.TaskType.ExtraInfo)
+	require.Equal(ttts.T(), ttc.MaxTaskInQueLimit, resp.TaskType.MaxTaskInQueLimit)
+	require.Equal(ttts.T(), ttc.Name, resp.TaskType.Name)
+}
+
+func (ttts *TaskTypeTestSuite) Test_TaskTypeAddFailed_BadRequest() {
+	c := swagger.NewAPIClient(ttts.swaggerCfg)
+	ttc := swagger.TaskTypeContent{
+		Name:              "",
+		MaxTaskInQueLimit: -1,
+		ExtraInfo:         "extra info",
+	}
+	_, httpResp, err := c.SchedulerSvrApi.AddTaskType(context.Background(), swagger.AddTaskTypeReq{
+		SessionId:         uuid.NewString(),
+		Name:              ttc.Name,
+		MaxTaskInQueLimit: ttc.MaxTaskInQueLimit,
+		ExtraInfo:         ttc.ExtraInfo,
+	})
+	require.NotNil(ttts.T(), err)
+	require.Equal(ttts.T(), http.StatusBadRequest, httpResp.StatusCode)
+}
+
+func (ttts *TaskTypeTestSuite) Test_TaskTypeAddFailed_Exist() {
+	c := swagger.NewAPIClient(ttts.swaggerCfg)
+	ttc := swagger.TaskTypeContent{
+		Name:              "123",
+		MaxTaskInQueLimit: -1,
+		ExtraInfo:         "extra info",
+	}
+	_, httpResp, err := c.SchedulerSvrApi.AddTaskType(context.Background(), swagger.AddTaskTypeReq{
+		SessionId:         uuid.NewString(),
+		Name:              ttc.Name,
+		MaxTaskInQueLimit: ttc.MaxTaskInQueLimit,
+		ExtraInfo:         ttc.ExtraInfo,
+	})
+	require.Nil(ttts.T(), err)
+	require.Equal(ttts.T(), http.StatusOK, httpResp.StatusCode)
+	_, httpResp, err = c.SchedulerSvrApi.AddTaskType(context.Background(), swagger.AddTaskTypeReq{
+		SessionId:         uuid.NewString(),
+		Name:              ttc.Name,
+		MaxTaskInQueLimit: ttc.MaxTaskInQueLimit,
+		ExtraInfo:         ttc.ExtraInfo,
+	})
+	require.NotNil(ttts.T(), err)
+	require.Equal(ttts.T(), http.StatusInternalServerError, httpResp.StatusCode)
+}
+
+func (ttts *TaskTypeTestSuite) Test_TaskTypeDeleteSuccess() {
+	c := swagger.NewAPIClient(ttts.swaggerCfg)
+	ttc := swagger.TaskTypeContent{
+		Name:              "123",
+		MaxTaskInQueLimit: -1,
+		ExtraInfo:         "extra info",
+	}
+	_, httpResp, err := c.SchedulerSvrApi.AddTaskType(context.Background(), swagger.AddTaskTypeReq{
+		SessionId:         uuid.NewString(),
+		Name:              ttc.Name,
+		MaxTaskInQueLimit: ttc.MaxTaskInQueLimit,
+		ExtraInfo:         ttc.ExtraInfo,
+	})
+	require.Nil(ttts.T(), err)
+	require.Equal(ttts.T(), http.StatusOK, httpResp.StatusCode)
+	_, httpResp, err = c.SchedulerSvrApi.DeleteTaskType(context.Background(), swagger.DeleteTaskTypeReq{
+		SessionId: uuid.NewString(),
+		Name:      ttc.Name,
+	})
+	require.Nil(ttts.T(), err)
+	require.Equal(ttts.T(), http.StatusOK, httpResp.StatusCode)
+
+	_, httpResp, err = c.SchedulerSvrApi.GetTaskType(context.Background(), swagger.GetTaskTypeReq{
+		SessionId: uuid.NewString(),
+		Name:      ttc.Name,
+	})
+	require.NotNil(ttts.T(), err)
+	require.Equal(ttts.T(), http.StatusNotFound, httpResp.StatusCode)
 }
 
 func Test_TaskTypeTestSuite(t *testing.T) {
