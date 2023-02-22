@@ -23,7 +23,7 @@ type TaskTypeTestSuite struct {
 }
 
 func (ttts *TaskTypeTestSuite) SetupSuite() {
-	conf.MustLoad(*ConfigFile, &ttts.cfg)
+	conf.MustLoad(*ApiTestConfigFile, &ttts.cfg)
 	ttts.T().Log(ttts.cfg.Addr)
 	ttts.T().Log(ttts.cfg.MysqlDataSource)
 	ttts.conn = sqlx.NewMysql(ttts.cfg.MysqlDataSource)
